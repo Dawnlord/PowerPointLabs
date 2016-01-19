@@ -8,7 +8,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.DataSources
 {
-    internal class DrawingLabData
+    public class DrawingLabData
     {
         private readonly List<Action<string>> _propertyChangedHandlers = new List<Action<string>>();
 

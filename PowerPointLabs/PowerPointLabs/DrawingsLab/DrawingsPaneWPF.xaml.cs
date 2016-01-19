@@ -332,6 +332,19 @@ namespace PowerPointLabs.DrawingsLab
             return bindings;
         }
 
+        private int KeyToGroupNumber(Native.VirtualKey key)
+        {
+            if (!Native.IsNumberKey(key)) throw new ArgumentException("A number key must be used");
+            var tokens = key.ToString().Split('_');
+            return int.Parse(tokens[tokens.Length - 1]);
+        }
+
+        private Native.VirtualKey GroupNumberToKey(int keyNum)
+        {
+            if (keyNum < 0 || keyNum > 9) throw new ArgumentException("keyNum must be between 0 and 9");
+            return (Native.VirtualKey)Enum.Parse(typeof(Native.VirtualKey), "VK_" + keyNum);
+        }
+
         private void InitializeHotkeys(Dictionary<Native.VirtualKey, Action> hotkeyActionBindings)
         {
             if (_data.IsHotkeysInitialised) return;
@@ -357,17 +370,18 @@ namespace PowerPointLabs.DrawingsLab
             for (int i = 0; i < numericKeys.Length; ++i)
             {
                 var key = numericKeys[i];
+                int keyNum = KeyToGroupNumber(key);
                 // Assign number and ctrl+number to control group commands.
-                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SelectControlGroup(key)));
-                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SetControlGroup(key)), ctrl: true);
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SelectControlGroup(keyNum)));
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SetControlGroup(keyNum)), ctrl: true);
 
                 // Block shift+number and ctrl+shift+number
                 PPKeyboard.AddConditionToBlockTextInput(IsReadingHotkeys, key, shift: true);
                 PPKeyboard.AddConditionToBlockTextInput(IsReadingHotkeys, key, ctrl: true, shift: true);
 
                 // Assign shift+number and ctrl+shift+number to control group commands.
-                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SelectControlGroup(key, appendToSelection: true)), shift: true);
-                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SetControlGroup(key, appendToGroup: true)), ctrl: true, shift: true);
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SelectControlGroup(keyNum, appendToSelection: true)), shift: true);
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => _drawingLab.SetControlGroup(keyNum, appendToGroup: true)), ctrl: true, shift: true);
             }
 
             foreach (var entry in hotkeyActionBindings)

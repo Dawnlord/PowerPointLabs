@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace PowerPointLabs.DrawingsLab
 {
-    class DrawingsLabDialogs
+    public class DrawingsLabDialogs
     {
         public static int ShowNumericDialog(string text, string caption)
         {

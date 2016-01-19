@@ -17,10 +17,10 @@ using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.DrawingsLab
 {
-    internal class DrawingsLabMain
+    public class DrawingsLabMain
     {
         private readonly DrawingsLabDataSource _dataSource;
-        private readonly Dictionary<Native.VirtualKey, ControlGroup> _controlGroups = new Dictionary<Native.VirtualKey, ControlGroup>();  
+        private readonly Dictionary<int, ControlGroup> _controlGroups = new Dictionary<int, ControlGroup>();  
 
         private struct ControlGroup
         {
@@ -890,9 +890,8 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public void SetControlGroup(Native.VirtualKey key, bool appendToGroup = false)
+        public void SetControlGroup(int key, bool appendToGroup = false)
         {
-            if (!Native.IsNumberKey(key)) return;
             if (appendToGroup)
             {
                 SelectControlGroup(key, true);
@@ -907,10 +906,8 @@ namespace PowerPointLabs.DrawingsLab
             _controlGroups[key] = new ControlGroup(slideId, shapes);
         }
 
-        public void SelectControlGroup(Native.VirtualKey key, bool appendToSelection = false)
+        public void SelectControlGroup(int key, bool appendToSelection = false)
         {
-            if (!Native.IsNumberKey(key)) return;
-
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             if (selection.Type == PpSelectionType.ppSelectionSlides) return;
 

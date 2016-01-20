@@ -4,12 +4,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PowerPointLabs.DrawingsLab.TestInterface;
 
 namespace PowerPointLabs.DrawingsLab
 {
-    public class DrawingsLabDialogs
+    public class DrawingsLabDialogs : IDrawingLabDialogService
     {
-        public static int ShowNumericDialog(string text, string caption)
+        private int ShowNumericDialog(string text, string caption)
         {
             var prompt = new Form()
             {
@@ -57,7 +58,7 @@ namespace PowerPointLabs.DrawingsLab
             return -1;
         }
 
-        public static string ShowTextDialog(string caption)
+        private string ShowTextDialog(string caption)
         {
             var prompt = new Form()
             {
@@ -91,15 +92,20 @@ namespace PowerPointLabs.DrawingsLab
             return null;
         }
 
-        public static int ShowMultiCloneNumericDialog()
+        public int ShowMultiCloneNumericDialog()
         {
             return ShowNumericDialog(TextCollection.DrawingsLabMultiCloneDialogText,
                                      TextCollection.DrawingsLabMultiCloneDialogHeader);
         }
 
-        public static string ShowInsertTextDialog()
+        public string ShowInsertTextDialog()
         {
             return ShowTextDialog(TextCollection.DrawingsLabSetTextDialogHeader);
+        }
+
+        public void DisplayMessageBox(string message, string caption)
+        {
+            MessageBox.Show(message, caption);
         }
     }
 }

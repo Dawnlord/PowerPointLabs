@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.DataSources;
+using PowerPointLabs.DrawingsLab.TestInterface;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using PPExtraEventHelper;
@@ -20,7 +21,8 @@ namespace PowerPointLabs.DrawingsLab
     public class DrawingsLabMain
     {
         private readonly DrawingsLabDataSource _dataSource;
-        private readonly Dictionary<int, ControlGroup> _controlGroups = new Dictionary<int, ControlGroup>();  
+        private readonly Dictionary<int, ControlGroup> _controlGroups = new Dictionary<int, ControlGroup>();
+        private IDrawingLabDialogService _drawingLabDialogs = new DrawingsLabDialogs();
 
         private struct ControlGroup
         {
@@ -38,6 +40,11 @@ namespace PowerPointLabs.DrawingsLab
         {
             _dataSource = new DrawingsLabDataSource();
             _dataSource.AssignData(data);
+        }
+
+        public void SetDialogService(IDrawingLabDialogService service)
+        {
+            _drawingLabDialogs = service;
         }
 
         public Action FunctionWrapper(Action action)
@@ -120,7 +127,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            var text = DrawingsLabDialogs.ShowInsertTextDialog();
+            var text = _drawingLabDialogs.ShowInsertTextDialog();
             if (text == null) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -334,7 +341,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog();
+            int clones = _drawingLabDialogs.ShowMultiCloneNumericDialog();
             if (clones <= 0) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -381,7 +388,7 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog();
+            int clones = _drawingLabDialogs.ShowMultiCloneNumericDialog();
             if (clones <= 0) return;
 
             int divisions = clones + 1;
@@ -1194,10 +1201,8 @@ namespace PowerPointLabs.DrawingsLab
         #region Utility Functions
         private void Error(string message)
         {
-            MessageBox.Show(message, "Error");
-            // for now do nothing.
+            _drawingLabDialogs.DisplayMessageBox(message, "Error");
         }
-
         #endregion
     }
 }

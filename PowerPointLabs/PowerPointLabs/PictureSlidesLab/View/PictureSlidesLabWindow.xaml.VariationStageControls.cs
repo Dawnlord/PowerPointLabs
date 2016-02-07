@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using PowerPointLabs.PictureSlidesLab.Model;
 using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.PictureSlidesLab.View
@@ -41,9 +42,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Color = GetColor(panel.Background as SolidColorBrush),
                 FullOpen = true
             };
-            if (colorDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-
-            ViewModel.BindSelectedColor(colorDialog.Color);
+            DisableLoadingStyleOnWindowActivate();
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ViewModel.BindSelectedColor(colorDialog.Color);
+            }
+            EnableLoadingStyleOnWindowActivate();
         }
 
         private void VariantsFontPanel_OnDropDownClosed(object sender, EventArgs e)
@@ -81,8 +85,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (VariantsComboBox.SelectedValue == null) return;
 
+            var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
+
             var currentCategory = (string) VariantsComboBox.SelectedValue;
-            if (currentCategory.Contains("Color"))
+            if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect)
+                && selectedItem != null
+                && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.ColorNoEffect)
             {
                 VariantsColorPanel.Visibility = Visibility.Visible;
                 ViewModel.BindStyleToColorPanel();

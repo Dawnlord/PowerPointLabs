@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using ImageProcessor;
@@ -144,6 +145,34 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
         }
 
+        public void ApplyTextGlowEffect(bool isUseTextGlow, string textGlowColor)
+        {
+            foreach (PowerPoint.Shape shape in Shapes)
+            {
+                if ((shape.Type != MsoShapeType.msoPlaceholder
+                     && shape.Type != MsoShapeType.msoTextBox)
+                    || shape.TextFrame.HasText == MsoTriState.msoFalse)
+                {
+                    continue;
+                }
+
+                if (isUseTextGlow)
+                {
+                    shape.TextFrame2.TextRange.Font.Glow.Radius = 8;
+                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.6f;
+                }
+                else
+                {
+                    shape.TextFrame2.TextRange.Font.Glow.Radius = 0;
+                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.0f;
+                }
+            }
+        }
+
         public void ApplyOriginalTextEffect()
         {
             foreach (PowerPoint.Shape shape in Shapes)
@@ -195,10 +224,53 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 .StartBoxing();
         }
 
+        public void ApplyPseudoTextWhenNoTextShapes()
+        {
+            var isTextShapesEmpty = new TextBoxes(
+                Shapes.Range(), SlideWidth, SlideHeight)
+                .IsTextShapesEmpty();
+
+            if (!isTextShapesEmpty) return;
+
+            try
+            {
+                Shapes.AddTitle().TextFrame2.TextRange.Text = "Picture Slides Lab";
+            }
+            catch
+            {
+                // title already exist
+                foreach (PowerPoint.Shape shape in Shapes)
+                {
+                    try
+                    {
+                        switch (shape.PlaceholderFormat.Type)
+                        {
+                            case PowerPoint.PpPlaceholderType.ppPlaceholderTitle:
+                            case PowerPoint.PpPlaceholderType.ppPlaceholderCenterTitle:
+                            case PowerPoint.PpPlaceholderType.ppPlaceholderVerticalTitle:
+                                shape.TextFrame2.TextRange.Text = "Picture Slides Lab";
+                                break;
+                        }
+                    }
+                    catch (COMException)
+                    {
+                        // non-placeholder shapes don't have PlaceholderFormat
+                        // and will cause exception
+                    }
+                }
+            }
+        }
+
         public void ApplyTextWrapping()
         {
             new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .StartTextWrapping();
+        }
+
+        public void RecoverTextWrapping()
+        {
+            new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
+                .RecoverTextWrapping();
         }
 
         // add overlay layer 
@@ -536,7 +608,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         }
 
         public List<PowerPoint.Shape> EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile, 
-            Rect rect, StyleOptions opt)
+            string imageContext, Rect rect, StyleOptions opt)
         {
             if (originalImageFile == null) return new List<PowerPoint.Shape>();
 
@@ -553,6 +625,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             // store source image info
             AddTag(originalImage, Tag.ReloadOriginImg, originalImageFile);
             AddTag(originalImage, Tag.ReloadCroppedImg, croppedImageFile);
+            AddTag(originalImage, Tag.ReloadImgContext, imageContext);
             AddTag(originalImage, Tag.ReloadRectX, rect.X.ToString(CultureInfo.InvariantCulture));
             AddTag(originalImage, Tag.ReloadRectY, rect.Y.ToString(CultureInfo.InvariantCulture));
             AddTag(originalImage, Tag.ReloadRectWidth, rect.Width.ToString(CultureInfo.InvariantCulture));
@@ -607,17 +680,18 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 return imageFilePath;
             }
 
-            var blurImageFile = TempPath.GetPath("fullsize_blur");
+            var blurImageFile = Util.TempPath.GetPath("fullsize_blur");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory
                     .Load(imageFilePath)
                     .Image;
                 var ratio = (float) image.Width / image.Height;
-                var targetHeight = MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree;
+                var targetHeight = Math.Ceiling(MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree);
+                var targetWidth = Math.Ceiling(targetHeight * ratio);
 
                 image = imageFactory
-                    .Resize(new Size((int)(targetHeight * ratio), (int)targetHeight))
+                    .Resize(new Size((int) targetWidth, (int) targetHeight))
                     .GaussianBlur(5).Image;
                 image.Save(blurImageFile);
             }
@@ -627,7 +701,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         private static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath,
             bool isActualSize)
         {
-            var specialEffectImageFile = TempPath.GetPath("fullsize_specialeffect");
+            var specialEffectImageFile = Util.TempPath.GetPath("fullsize_specialeffect");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory

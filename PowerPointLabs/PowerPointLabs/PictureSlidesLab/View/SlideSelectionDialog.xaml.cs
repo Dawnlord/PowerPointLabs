@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Util;
@@ -30,6 +31,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         public ObservableString DialogTitleProperty { get; set; }
 
+        public bool IsOpen { get; set; }
+
         private int _prevSlideIndex = -1;
 
         private int _nextSlideIndex = -1;
@@ -45,17 +48,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
             DialogTitle.DataContext = DialogTitleProperty;
         }
 
-        public void FocusOkButton()
+        public SlideSelectionDialog FocusOkButton()
         {
             CancelButton.Focusable = true;
             CancelButton.Focus();
+            return this;
         }
 
         /// <summary>
         /// This method can only be called after dialog is fully initialized
         /// </summary>
         /// <param name="title"></param>
-        public void Init(string title)
+        public SlideSelectionDialog Init(string title)
         {
             DialogTitleProperty.Text = title;
             Dispatcher.Invoke(new Action(() =>
@@ -91,6 +95,17 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             LoadNextSlides(false);
             SlideListBox.ScrollIntoView(SlideListBox.SelectedItem);
+            return this;
+        }
+
+        public void OpenDialog()
+        {
+            IsOpen = true;
+        }
+
+        public void CloseDialog()
+        {
+            IsOpen = false;
         }
 
         private void SelectCurrentSlide()
@@ -155,17 +170,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        public void CustomizeGotoSlideButton(string content, string tooltip)
+        public SlideSelectionDialog CustomizeGotoSlideButton(string content, string tooltip)
         {
             GotoSlideButton.Content = content;
             GotoSlideButton.ToolTip = tooltip;
+            return this;
         }
 
-        public void CustomizeAdditionalButton(string content, string tooltip)
+        public SlideSelectionDialog CustomizeAdditionalButton(string content, string tooltip)
         {
             AdditionalButton.Content = content;
             AdditionalButton.ToolTip = tooltip;
             AdditionalButton.Visibility = Visibility.Visible;
+            return this;
         }
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
@@ -326,6 +343,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 SlideListBox.SelectedIndex = SlideListBox.SelectedIndex + 1;
             }
             SlideListBox.ScrollIntoView(SlideListBox.Items[SlideListBox.SelectedIndex]);
+        }
+
+        private void SlideListBox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement((ItemsControl)sender, (DependencyObject)e.OriginalSource)
+                as ListBoxItem;
+            if (item == null || item.Content == null) return;
+
+            if (OnGotoSlide != null)
+            {
+                OnGotoSlide();
+            }
         }
     }
 }

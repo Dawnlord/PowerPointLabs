@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using MahApps.Metro.Controls.Dialogs;
+using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
 using PowerPointLabs.PictureSlidesLab.Util;
@@ -26,8 +27,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                _gotoSlideDialog.Init("Successfully Applied!");
-                _gotoSlideDialog.FocusOkButton();
+                if (_gotoSlideDialog.IsOpen) return;
+
+                _gotoSlideDialog
+                    .Init("Successfully Applied!")
+                    .CustomizeGotoSlideButton("Select", "Select the slide to edit styles.")
+                    .FocusOkButton()
+                    .OpenDialog();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
             catch
@@ -58,6 +64,30 @@ namespace PowerPointLabs.PictureSlidesLab.View
         public void SetVariantsColorPanelBackground(Brush color)
         {
             VariantsColorPanel.Background = color;
+        }
+
+        public ImageItem CreateDefaultPictureItem()
+        {
+            return new ImageItem
+            {
+                ImageFile = StoragePath.NoPicturePlaceholderImgPath,
+                Tooltip = "Please select a picture."
+            };
+        }
+
+        public bool IsDisplayDefaultPicture()
+        {
+            return _isDisplayDefaultPicture;
+        }
+
+        public void EnableUpdatingPreviewImages()
+        {
+            _isDisplayDefaultPicture = false;
+        }
+
+        public void DisableUpdatingPreviewImages()
+        {
+            _isDisplayDefaultPicture = true;
         }
     }
 }

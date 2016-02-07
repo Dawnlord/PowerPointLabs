@@ -102,7 +102,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return new StyleOptions
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameDirectText,
-                TextBoxPosition = 5
+                TextBoxPosition = 5,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -113,7 +115,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameBlur,
                 IsUseBlurStyle = true,
                 BlurDegree = 85,
-                TextBoxPosition = 5
+                TextBoxPosition = 5,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -147,7 +151,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameSpecialEffect,
                 IsUseSpecialEffectStyle = true,
-                SpecialEffect = 0
+                SpecialEffect = 0,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -169,7 +175,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return new StyleOptions()
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameOutline,
-                IsUseOutlineStyle = true
+                IsUseOutlineStyle = true,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -178,7 +186,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return new StyleOptions()
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameFrame,
-                IsUseFrameStyle = true
+                IsUseFrameStyle = true,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -189,7 +199,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameTriangle,
                 IsUseTriangleStyle = true,
                 TriangleColor = "#007FFF", // blue
-                TextBoxPosition = 4 // left
+                TextBoxPosition = 4, // left
+                TriangleTransparency = 25
             };
         }
 
@@ -199,7 +210,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameCircle,
                 IsUseCircleStyle = true,
-                FontColor = "#000000"
+                FontColor = "#000000",
+                CircleTransparency = 25
             };
         }
 
@@ -213,6 +225,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             {
                 styleOption.IsUseTriangleStyle = true;
                 styleOption.TextBoxPosition = 4; // left
+                styleOption.TriangleTransparency = 25;
             }
             UpdateStyleName(
                 result,
@@ -226,6 +239,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             foreach (var styleOption in result)
             {
                 styleOption.IsUseCircleStyle = true;
+                styleOption.CircleTransparency = 25;
             }
             return UpdateStyleName(
                 result,
@@ -238,6 +252,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             foreach (var styleOption in result)
             {
                 styleOption.IsUseFrameStyle = true;
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
             }
             return UpdateStyleName(
                 result,
@@ -250,6 +266,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             foreach (var styleOption in result)
             {
                 styleOption.IsUseOutlineStyle = true;
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
             }
             return UpdateStyleName(
                 result,
@@ -269,8 +287,14 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         private static List<StyleOptions> GetOptionsForSpecialEffect()
         {
+            var result = GetOptions();
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
+            }
             return UpdateStyleName(
-                GetOptions(),
+                result,
                 TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
         } 
 
@@ -296,16 +320,25 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         private static List<StyleOptions> GetOptionsForBlur()
         {
+            var result = GetOptions();
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
+            }
             return UpdateStyleName(
-                GetOptions(),
+                result,
                 TextCollection.PictureSlidesLabText.StyleNameBlur);
         } 
 
         private static List<StyleOptions> GetOptionsForDirectText()
         {
             var result = GetOptions();
-            result[0].FontColor = "#000000";
-            result[1].FontColor = "#000000";
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
+            }
             UpdateStyleName(
                 result,
                 TextCollection.PictureSlidesLabText.StyleNameDirectText);

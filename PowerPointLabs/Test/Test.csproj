@@ -55,6 +55,10 @@
     </Reference>
     <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
@@ -87,6 +91,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FunctionalTest\AgendaLabBeamSyncTest.cs" />
+    <Compile Include="FunctionalTest\AgendaLabWithSlideNumberGenerateTest.cs" />
     <Compile Include="FunctionalTest\AgendaLabGenerateTest.cs" />
     <Compile Include="FunctionalTest\AgendaLabTextSyncTest.cs" />
     <Compile Include="FunctionalTest\AgendaLabVisualSyncTest.cs" />
@@ -107,6 +112,7 @@
     <Compile Include="FunctionalTest\SpotlightTest.cs" />
     <Compile Include="FunctionalTest\TextFragmentsTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
+    <Compile Include="Base\TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
@@ -123,6 +129,7 @@
     <Compile Include="UnitTest\PictureSlidesLab\Util\TempPathTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Util\StoragePathTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Util\UrlUtilTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModelTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\PauseTest.cs" />
@@ -130,6 +137,7 @@
     <Compile Include="UnitTest\TagMatchers\StartSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\StartVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\TaggedTextTest.cs" />
+    <Compile Include="UnitTest\Utils\TempPathTest.cs" />
     <Compile Include="Util\TagUtil.cs" />
     <Compile Include="Util\DialogUtil.cs" />
     <Compile Include="Util\PresentationUtil.cs" />
@@ -153,7 +161,9 @@
       <Name>PowerPointLabs</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

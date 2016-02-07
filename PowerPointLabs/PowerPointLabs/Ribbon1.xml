@@ -308,7 +308,7 @@
                     onAction="UpdateAgendaClick"/>
           </menu>
           <button id="DrawingsLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetDrawingsLabButtonLabel"
                   size="large"
                   getImage="GetDrawingsLabImage"

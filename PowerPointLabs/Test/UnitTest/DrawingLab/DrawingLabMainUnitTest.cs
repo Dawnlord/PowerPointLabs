@@ -117,5 +117,44 @@ namespace Test.UnitTest.DrawingLab
             Assert.AreEqual(MsoArrowheadStyle.msoArrowheadNone, bottomLine.Line.EndArrowheadStyle);
 
         }
+
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void DrawingLabHideUnhide()
+        {
+            var hiddenCircle = PpOperations.SelectShape("HiddenCircle")[1];
+            var leftRectangle = PpOperations.SelectShape("LeftRectangle")[1];
+            var topLine = PpOperations.SelectShape("TopLine")[1];
+
+            Assert.AreEqual(MsoTriState.msoFalse, hiddenCircle.Visible);
+            Assert.AreEqual(MsoTriState.msoTrue, leftRectangle.Visible);
+            Assert.AreEqual(MsoTriState.msoTrue, topLine.Visible);
+
+            _selection.CurrentSlide = PpOperations.SelectSlide(1);
+            _selection.SelectedShapes = PpOperations.SelectShapes(new[] {"RightRectangle", "TopLine"});
+
+            _drawingsLab.HideTool();
+
+            Assert.AreEqual(MsoTriState.msoFalse, hiddenCircle.Visible);
+            Assert.AreEqual(MsoTriState.msoTrue, leftRectangle.Visible);
+            Assert.AreEqual(MsoTriState.msoFalse, topLine.Visible);
+
+            _drawingsLab.ShowAllTool();
+
+            Assert.AreEqual(MsoTriState.msoTrue, hiddenCircle.Visible);
+            Assert.AreEqual(MsoTriState.msoTrue, leftRectangle.Visible);
+            Assert.AreEqual(MsoTriState.msoTrue, topLine.Visible);
+
+            _selection.SelectedShapes = PpOperations.SelectShapes(new[] { "LeftRectangle" });
+            _drawingsLab.HideTool();
+
+            _selection.SelectedShapes = PpOperations.SelectShapes(new[] { "HiddenCircle" });
+            _drawingsLab.HideTool();
+
+            Assert.AreEqual(MsoTriState.msoFalse, hiddenCircle.Visible);
+            Assert.AreEqual(MsoTriState.msoFalse, leftRectangle.Visible);
+            Assert.AreEqual(MsoTriState.msoTrue, topLine.Visible);
+        }
     }
 }

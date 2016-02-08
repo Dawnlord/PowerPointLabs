@@ -310,7 +310,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public void ShowAllTool()
         {
-            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
+            var shapes = GetCurrentSlide().Shapes;
 
             StartNewUndoEntry();
             foreach (var shape in shapes.Cast<Shape>())
@@ -335,7 +335,7 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             StartNewUndoEntry();
-            PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
+            GetCurrentSlide().CopyShapesToSlide(selection.ShapeRange);
         }
 
         public void MultiCloneExtendTool()
@@ -914,7 +914,7 @@ namespace PowerPointLabs.DrawingsLab
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
             var shapes = new HashSet<int>(selection.ShapeRange.Cast<Shape>().Select(shape => shape.Id));
-            var slideId = PowerPointCurrentPresentationInfo.CurrentSlide.ID;
+            var slideId = GetCurrentSlide().ID;
 
             _controlGroups[key] = new ControlGroup(slideId, shapes);
         }
@@ -957,10 +957,10 @@ namespace PowerPointLabs.DrawingsLab
 
             var selectedShapeTypes = new HashSet<MsoAutoShapeType>(selection.ShapeRange.Cast<Shape>().Select(shape => shape.AutoShapeType));
 
-            PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Cast<Shape>()
-                                                                 .Where(shape => selectedShapeTypes.Contains(shape.AutoShapeType))
-                                                                 .ToList()
-                                                                 .ForEach(shape => shape.Select(MsoTriState.msoFalse));
+            GetCurrentSlide().Shapes.Cast<Shape>()
+                                    .Where(shape => selectedShapeTypes.Contains(shape.AutoShapeType))
+                                    .ToList()
+                                    .ForEach(shape => shape.Select(MsoTriState.msoFalse));
         }
 
         public void AlignHorizontal()

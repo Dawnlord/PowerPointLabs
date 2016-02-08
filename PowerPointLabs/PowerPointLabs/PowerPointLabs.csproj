@@ -324,6 +324,7 @@
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="DrawingsLab\TestInterface\IDrawingLabDialogService.cs" />
+    <Compile Include="DrawingsLab\TestInterface\IDrawingLabSelectionService.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">

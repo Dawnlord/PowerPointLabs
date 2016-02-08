@@ -114,6 +114,7 @@
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="Base\TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
+    <Compile Include="UnitTest\DrawingLab\DrawingLabMainUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

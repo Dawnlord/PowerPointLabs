@@ -23,6 +23,7 @@ namespace PowerPointLabs.DrawingsLab
         private readonly DrawingsLabDataSource _dataSource;
         private readonly Dictionary<int, ControlGroup> _controlGroups = new Dictionary<int, ControlGroup>();
         private IDrawingLabDialogService _drawingLabDialogs = new DrawingsLabDialogs();
+        private IDrawingLabSelectionService _selectionService = new DrawingLabDefaultSelectionService();
 
         private struct ControlGroup
         {
@@ -45,6 +46,11 @@ namespace PowerPointLabs.DrawingsLab
         public void SetDialogService(IDrawingLabDialogService service)
         {
             _drawingLabDialogs = service;
+        }
+
+        public void SetSelectionService(IDrawingLabSelectionService service)
+        {
+            _selectionService = service;
         }
 
         public Action FunctionWrapper(Action action)
@@ -130,7 +136,7 @@ namespace PowerPointLabs.DrawingsLab
             var text = _drawingLabDialogs.ShowInsertTextDialog();
             if (text == null) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             foreach (var shape in shapes)
             {
                 try
@@ -155,7 +161,7 @@ namespace PowerPointLabs.DrawingsLab
 
             try
             {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
+                StartNewUndoEntry();
                 var commandBars = Globals.ThisAddIn.Application.CommandBars;
                 commandBars.ExecuteMso("EquationInsertNew");
             }
@@ -174,7 +180,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             foreach (var shape in shapes)
             {
                 Graphics.SetText(shape, String.Empty);
@@ -190,11 +196,11 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            var slide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            var slide = GetCurrentSlide();
 
             try
             {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
+                StartNewUndoEntry();
                 slide.GroupShapes(shapes);
             }
             catch (UnauthorizedAccessException)
@@ -212,7 +218,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
             
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             bool didSomething = false;
             foreach (var shape in shapes.Where(Graphics.IsAGroup))
             {
@@ -234,7 +240,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             var allArrowHeads = shapes.Where(Graphics.CanAddArrows)
                                       .All(shape => shape.Line.BeginArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
 
@@ -264,7 +270,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             var allArrowHeads = shapes.Where(Graphics.CanAddArrows)
                                       .All(shape => shape.Line.EndArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
 
@@ -295,7 +301,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             foreach (var shape in shapes)
             {
                 shape.Visible = MsoTriState.msoFalse;
@@ -306,7 +312,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             foreach (var shape in shapes.Cast<Shape>())
             {
                 shape.Visible = MsoTriState.msoTrue;
@@ -328,7 +334,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
         }
 
@@ -344,7 +350,7 @@ namespace PowerPointLabs.DrawingsLab
             int clones = _drawingLabDialogs.ShowMultiCloneNumericDialog();
             if (clones <= 0) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             int midpoint = shapes.Count / 2;
             for (int i = 0; i < shapes.Count / 2; ++i)
             {
@@ -387,7 +393,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             int clones = _drawingLabDialogs.ShowMultiCloneNumericDialog();
             if (clones <= 0) return;
 
@@ -450,7 +456,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             // Clone shapes in a grid.
             var newlyAddedShapes = new List<Shape>();
 
@@ -605,7 +611,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendBackward);
         }
 
@@ -618,7 +624,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringForward);
         }
 
@@ -631,7 +637,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
@@ -644,7 +650,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringToFront);
         }
 
@@ -657,7 +663,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             var shapeToMoveBehind = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
@@ -678,7 +684,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             var shapeToMoveInFront = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
@@ -715,7 +721,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             foreach (var shape in shapes)
             {
                 if (applyAllSettings || _dataSource.ShiftIncludePositionX)
@@ -757,7 +763,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             foreach (var shape in shapes)
             {
                 if (applyAllSettings || _dataSource.SavedIncludePositionX)
@@ -838,7 +844,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
 
             Action<bool, bool, Action> apply = (isDefaultSetting, condition, action) =>
             {
@@ -918,7 +924,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             if (selection.Type == PpSelectionType.ppSelectionSlides) return;
 
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            var currentSlide = GetCurrentSlide();
             if (!_controlGroups.ContainsKey(key)) return;
 
             var controlGroup = _controlGroups[key];
@@ -970,7 +976,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
             double targetAnchor = dialog.TargetAnchor / 100;
 
@@ -997,7 +1003,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
             double targetAnchor = dialog.TargetAnchor / 100;
 
@@ -1024,7 +1030,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             double sourceAnchorX = dialog.SourceAnchorVertical / 100;
             double targetAnchorX = dialog.TargetAnchorVertical / 100;
             double sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
@@ -1056,7 +1062,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
             double targetAnchor = dialog.TargetAnchor / 100;
 
@@ -1080,7 +1086,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
             double targetAnchor = dialog.TargetAnchor / 100;
 
@@ -1105,7 +1111,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            StartNewUndoEntry();
             double sourceAnchorX = dialog.SourceAnchorVertical / 100;
             double targetAnchorX = dialog.TargetAnchorVertical / 100;
             double sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
@@ -1187,12 +1193,18 @@ namespace PowerPointLabs.DrawingsLab
 
         private List<Shape> GetCurrentlySelectedShapes()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type == PpSelectionType.ppSelectionShapes || selection.Type == PpSelectionType.ppSelectionText)
-            {
-                return selection.ShapeRange.Cast<Shape>().ToList();
-            }
-            return new List<Shape>();
+            return _selectionService.GetCurrentlySelectedShapes();
+        }
+
+        private PowerPointSlide GetCurrentSlide()
+        {
+            return _selectionService.GetCurrentSlide();
+        }
+
+        private void StartNewUndoEntry()
+        {
+            if (Globals.ThisAddIn == null) return;
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
         }
 
         #endregion

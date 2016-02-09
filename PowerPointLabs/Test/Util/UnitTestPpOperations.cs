@@ -203,6 +203,12 @@ namespace Test.Util
             return _currentShape;
         }
 
+        public ShapeRange SelectAllShapesInSlide()
+        {
+            if (CurrentSlide == null) return null;
+            return CurrentSlide.Shapes.Range();            
+        }
+
         public Shape RecursiveGetShapeWithPrefix(params string[] prefixes)
         {
             var parentShape = SelectShapesByPrefix(prefixes[0])[1];

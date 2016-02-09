@@ -51,6 +51,11 @@ namespace PowerPointLabs.DrawingsLab.TestInterface
             set { shapes = value.Cast<Shape>().ToList(); }
         }
 
+        public Shape[] SelectedShapesArray
+        {
+            set { shapes = value.ToList(); }
+        }
+
         public Slide CurrentSlide
         {
             set { slide = PowerPointSlide.FromSlideFactory(value); }

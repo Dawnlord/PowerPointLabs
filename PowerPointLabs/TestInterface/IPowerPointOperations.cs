@@ -43,6 +43,7 @@ namespace TestInterface
         ShapeRange SelectShape(string shapeName);
         ShapeRange SelectShapes(IEnumerable<string> shapeNames);
         ShapeRange SelectShapesByPrefix(string prefix);
+        ShapeRange SelectAllShapesInSlide();
         Shape RecursiveGetShapeWithPrefix(params string[] prefixes);
         FileInfo ExportSelectedShapes();
         string SelectAllTextInShape(string shapeName);

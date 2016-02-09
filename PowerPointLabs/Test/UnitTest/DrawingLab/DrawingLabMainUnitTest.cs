@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using Microsoft.Office.Core;
+﻿using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.DrawingsLab.TestInterface;
-using PowerPointLabs.PictureSlidesLab.Model;
-using PowerPointLabs.PictureSlidesLab.ModelFactory;
-using PowerPointLabs.PictureSlidesLab.Service;
-using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.Utils;
 using Test.Util;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -26,7 +17,7 @@ namespace Test.UnitTest.DrawingLab
 
         protected override string GetTestingSlideName()
         {
-            return "DrawingLab\\DrawingLab.pptx";
+            return "DrawingLab\\DrawingLabMain.pptx";
         }
 
         [TestInitialize]
@@ -62,7 +53,7 @@ namespace Test.UnitTest.DrawingLab
             _selection.SelectedShapes = groupShapes;
             _drawingsLab.UngroupShapes();
 
-            var allShapes = PpOperations.SelectShapesByPrefix("");
+            var allShapes = PpOperations.SelectAllShapesInSlide();
             Assert.IsTrue(allShapes.Count >= 2);
             foreach (Shape shape in allShapes)
             {

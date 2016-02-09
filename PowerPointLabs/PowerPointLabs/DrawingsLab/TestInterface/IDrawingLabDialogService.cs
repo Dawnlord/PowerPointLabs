@@ -35,5 +35,11 @@ namespace PowerPointLabs.DrawingsLab.TestInterface
             LastMessageBoxMessage = message;
             LastMessageBoxCaption = caption;
         }
+
+        public void ClearMessages()
+        {
+            LastMessageBoxMessage = null;
+            LastMessageBoxCaption = null;
+        }
     }
 }

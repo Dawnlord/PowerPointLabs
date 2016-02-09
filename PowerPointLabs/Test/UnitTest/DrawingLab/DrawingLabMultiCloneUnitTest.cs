@@ -52,11 +52,13 @@ namespace Test.UnitTest.DrawingLab
 
             // Test: Selecting an 1 shape should fail.
             _selection.SelectedShapesArray = new[] { triangleB };
+            _dialog.ClearMessages();
             _drawingsLab.MultiCloneBetweenTool();
             Assert.AreEqual(TextCollection.DrawingsLabSelectTwoSetsOfShapes, _dialog.LastMessageBoxMessage);
 
             // Test: Selecting no shapes should fail.
             _selection.SelectedShapesArray = new Shape[] { };
+            _dialog.ClearMessages();
             _drawingsLab.MultiCloneExtendTool();
             Assert.AreEqual(TextCollection.DrawingsLabSelectTwoSetsOfShapes, _dialog.LastMessageBoxMessage);
 
@@ -80,8 +82,10 @@ namespace Test.UnitTest.DrawingLab
             // Test: Selecting an odd number of shapes should fail.
             var threeShapes = allShapes.GetRange(0,3).ToArray();
             _selection.SelectedShapesArray = threeShapes;
+            _dialog.ClearMessages();
             _drawingsLab.MultiCloneExtendTool();
             Assert.AreEqual(TextCollection.DrawingsLabSelectTwoSetsOfShapes, _dialog.LastMessageBoxMessage);
+            _dialog.ClearMessages();
             _drawingsLab.MultiCloneBetweenTool();
             Assert.AreEqual(TextCollection.DrawingsLabSelectTwoSetsOfShapes, _dialog.LastMessageBoxMessage);
 

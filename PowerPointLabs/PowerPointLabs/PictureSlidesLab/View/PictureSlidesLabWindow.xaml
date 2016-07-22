@@ -83,6 +83,7 @@
                         <ContextMenu>
                             <MenuItem Header="Adjust picture dimensions" Click="MenuItemAdjustImage_OnClickFromPreviewListBox"></MenuItem>
                             <MenuItem Header="Edit picture source" Click="MenuItemEditSource_OnClickFromPreviewListBox"></MenuItem>
+                            <MenuItem Header="Edit alignment for text position" Click="MenuItemEditAlignment_OnClickFromPreviewListBox"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.Template>

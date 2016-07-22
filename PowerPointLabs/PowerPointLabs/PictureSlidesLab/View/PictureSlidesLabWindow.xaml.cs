@@ -761,6 +761,44 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
+        private void EditAlignment(ImageItem source)
+        {
+            var metroDialogSettings = new MetroDialogSettings
+            {
+                DefaultText = source.Source
+            };
+            this.ShowInputAsync("Edit Alignment For Text Position", "Alignment:", metroDialogSettings)
+                .ContinueWith(task =>
+                {
+                    if (!string.IsNullOrEmpty(task.Result))
+                    {
+                        source.Source = task.Result;
+                    }
+                });
+        }
+
+        private void MenuItemEditAlignment_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.IsInPictureVariation())
+            {
+                var imageItem = ViewModel.GetSelectedPictureInPictureVariation(
+                    StylesVariationListBox.SelectedIndex);
+                if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
+                    || imageItem.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    return;
+                }
+                EditAlignment(imageItem);
+            }
+            else
+            {
+                var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+
+                EditAlignment(selectedImage);
+            }
+        }
+
         /// <summary>
         /// Update controls states when selection changed in the variation stage
         /// </summary>

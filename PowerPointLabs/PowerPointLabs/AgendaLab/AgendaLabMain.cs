@@ -108,7 +108,7 @@ namespace PowerPointLabs.AgendaLab
                 if (AgendaPresent())
                 {
                     var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
-                                                  TextCollection.AgendaLabAgendaExistErrorCaption + " " + currentWindow.ViewType.ToString(),
+                                                  TextCollection.AgendaLabAgendaExistErrorCaption,
                                                   MessageBoxButtons.OKCancel);
                     if (confirm != DialogResult.OK) return;
 

@@ -25,6 +25,11 @@ using MessageBox = System.Windows.Forms.MessageBox;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using PowerPointLabs.PositionsLab;
+using Microsoft.Practices.EnterpriseLibrary.PolicyInjection;
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.EnterpriseLibrary.Logging;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using AutoLog;
 
 namespace PowerPointLabs
 {
@@ -75,13 +80,16 @@ namespace PowerPointLabs
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(PowerPointLabsFT),
                 "PowerPointLabsFT", WellKnownObjectMode.Singleton);
         }
+        private static LogWriter logWriter = EnterpriseLibraryContainer.Current.GetInstance<LogWriter>();
 
-        # region Powerpoint Application Event Handlers
-
+        #region Powerpoint Application Event Handlers
         private void ThisAddInStartup(object sender, EventArgs e)
         {
             SetupLogger();
-            Logger.Log("PowerPointLabs Started");
+            //Logger.Log("PowerPointLabs Started");
+            IEmployee emp = PolicyInjection.Create<Employee, IEmployee>();
+            emp.Work();
+            Console.WriteLine(emp);
 
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
 

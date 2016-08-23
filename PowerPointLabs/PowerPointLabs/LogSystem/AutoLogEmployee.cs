@@ -7,20 +7,28 @@ using Microsoft.Practices.Unity;
 namespace AutoLog
 {
 
-    public class Employee : MarshalByRefObject
+    public interface IEmployee
     {
-        public Employee() { }
+        void Work();
+    }
+
+    public class Employee : IEmployee
+    {
+
+        public Employee()
+        {  
+        }
 
         public string Name { get; set; }
 
-        //[AutoLogCallHandler()]
+        [AutoLogCallHandler()]
         public void Work()
         {
             Console.WriteLine("Now is {0},{1} is working hard!", DateTime.Now.ToShortTimeString(), Name);
             throw new Exception("Customer Exception");
         }
 
-        //[AutoLogCallHandler()]
+        [AutoLogCallHandler()]
         public override string ToString()
         {
             return string.Format("This is {0}.", Name);

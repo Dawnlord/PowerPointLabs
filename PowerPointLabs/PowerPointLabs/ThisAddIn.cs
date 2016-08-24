@@ -83,13 +83,23 @@ namespace PowerPointLabs
         private static LogWriter logWriter = EnterpriseLibraryContainer.Current.GetInstance<LogWriter>();
 
         #region Powerpoint Application Event Handlers
-        private void ThisAddInStartup(object sender, EventArgs e)
+        private class SetUpThisAddIn : IEmployee
+        {
+            public SetUpThisAddIn()
+            {
+            }
+
+            [AutoLogCallHandler()]
+            void IEmployee.Work()
+            {
+                StartUp();
+            }
+        }
+
+        private void StartUp()
         {
             SetupLogger();
-            //Logger.Log("PowerPointLabs Started");
-            IEmployee emp = PolicyInjection.Create<Employee, IEmployee>();
-            emp.Work();
-            Console.WriteLine(emp);
+            PowerPointLabs.ActionFramework.Common.Log.Logger.Log("PowerPointLabs Started");
 
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
 
@@ -111,7 +121,7 @@ namespace PowerPointLabs
             // Here, we want the priority to be: Application action > Window action > Slide action
 
             // Priority High: Application Actions
-            ((PowerPoint.EApplication_Event) Application).NewPresentation += ThisAddInNewPresentation;
+            ((PowerPoint.EApplication_Event)Application).NewPresentation += ThisAddInNewPresentation;
             Application.AfterNewPresentation += ThisAddInAfterNewPresentation;
             Application.PresentationOpen += ThisAddInPrensentationOpen;
             Application.PresentationClose += ThisAddInPresentationClose;
@@ -125,6 +135,11 @@ namespace PowerPointLabs
 
             // Priority Low: Slide Actions
             Application.SlideSelectionChanged += ThisAddInSlideSelectionChanged;
+        }
+
+        private void ThisAddInStartup(object sender, EventArgs e)
+        {
+            
         }
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)

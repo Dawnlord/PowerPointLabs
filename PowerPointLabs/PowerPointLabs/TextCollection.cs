@@ -96,6 +96,7 @@
         public const string EffectsLabMenuSupertip = @"Apply elegant effects to shapes.";
         public const string EffectsLabMakeTransparentSupertip = @"Adjust the transparency of pictures or shapes.";
         public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
+        public const string EffectsLabBlurSelectedSupertip = @"Blur the selected shapes.";
         public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
         public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
         public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for the selected shapes.";
@@ -144,32 +145,32 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Auto Animation
-        public const string AutoAnimateGroupLabel = "Auto Animate";
+        public const string AutoAnimateGroupLabel = "Animation Lab";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
         # endregion
 
         # region Auto Zoom
-        public const string AutoZoomGroupLabel = "Auto Zoom";
+        public const string AutoZoomGroupLabel = "Zoom Lab";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
         # endregion
 
         # region Auto Crop
-        public const string AutoCropGroupLabel = "Auto Crop";
+        public const string AutoCropGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         # endregion
 
         # region Spotlight
-        public const string SpotLightGroupLabel = "Spotlight";
+        public const string SpotLightGroupLabel = "Spotlight Lab";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
         # endregion
 
         # region Auto Narration
-        public const string EmbedAudioGroupLabel = "Auto Narrate";
+        public const string EmbedAudioGroupLabel = "Narrations Lab";
         public const string AddAudioButtonLabel = "Add Audio";
         public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
         public const string AddRecordButtonLabel = "Record Audio Manually";
@@ -177,14 +178,14 @@
         # endregion
 
         # region Auto Caption
-        public const string EmbedCaptionGroupLabel = "Auto Captions";
+        public const string EmbedCaptionGroupLabel = "Captions Lab";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
         # endregion
 
         # region Highlight Points
-        public const string HighlightBulletsGroupLabel = "Highlight Bullets";
+        public const string HighlightBulletsGroupLabel = "Highlight Bullets Lab";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
@@ -205,6 +206,7 @@
         public const string EffectsLabButtonLabel = "Effects Lab";
         public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
+        public const string EffectsLabBlurSelectedButtonLabel = "Blur Selected";
         public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
         public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
@@ -216,7 +218,7 @@
         public const string AgendaLabBulletPointButtonLabel = "Create Text Agenda";
         public const string AgendaLabVisualAgendaButtonLabel = "Create Visual Agenda";
         public const string AgendaLabBeamAgendaButtonLabel = "Create Sidebar Agenda";
-        public const string AgendaLabUpdateAgendaButtonLabel = "Syncronize Agenda";
+        public const string AgendaLabUpdateAgendaButtonLabel = "Synchronize Agenda";
         public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
@@ -321,8 +323,6 @@
             //------------ Msg -------------
             public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
             public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
-            public const string ErrorMessageForExceedSlideBound = "The selected shape needs to be within the slide's boundaries.";
-            public const string ErrorMessageForRotationNonZero = "'Crop To Shape' does not currently support rotated shapes.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
         }
 
@@ -347,13 +347,16 @@
             /// </summary>
             public const string NoEffect = "No Effect";
             public const string ColorHasEffect = "Color";
+            public const string TransparencyHasEffect = "Transparency";
+            public const string BannerHasEffect = "Banner";
+            public const string TextBoxHasEffect = "TextBox";
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryFontColor = "Font Color";
             public const string VariantCategoryTextGlowColor = "Text Glow Color";
             public const string VariantCategoryBannerColor = "Banner Color";
             public const string VariantCategoryTextBoxColor = "TextBox Color";
-            public const string VariantCategoryFrostedGlassTextBoxColor = "Frosted Glass TextBox Color";
-            public const string VariantCategoryFrostedGlassBannerColor = "Frosted Glass Banner Color";
+            public const string VariantCategoryFrostedGlassTextBoxColor = "TextBox Color";
+            public const string VariantCategoryFrostedGlassBannerColor = "Banner Color";
             public const string VariantCategoryFrameColor = "Frame Color";
             public const string VariantCategoryCircleColor = "Circle Color";
             public const string VariantCategoryTriangleColor = "Triangle Color";
@@ -374,6 +377,7 @@
             public const string VariantCategoryFrameTransparency = "Frame Transparency";
             public const string VariantCategoryCircleTransparency = "Circle Transparency";
             public const string VariantCategoryTriangleTransparency = "Triangle Transparency";
+            public const string VariantCategoryTextTransparency = "Text Transparency";
 
             /// <summary>
             /// Styles Preview Name
@@ -474,6 +478,13 @@
         public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";
 
         public const string DrawingsLabSetTextDialogHeader = "Set Text";
+
+        # endregion
+
+        # region Effects Lab
+
+        public const string EffectsLabBlurSelectedErrorNoSelection = "'Blur Selected'  requires at least one shape or text box to be selected.";
+        public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
 
         # endregion
 
@@ -587,8 +598,10 @@
             public const string ErrorNoSelection = "Please select at least a shape before using this feature";
             public const string ErrorFewerThanTwoSelection = "Please select at least two shapes before using this feature";
             public const string ErrorFewerThanThreeSelection = "Please select at least three shapes before using this feature";
+            public const string ErrorFewerThanFourSelection = "Please select at least four shapes before using this feature";
             public const string ErrorFunctionNotSupportedForWithinShapes = "This function is not supported for Within Corner Most Objects Setting.";
             public const string ErrorFunctionNotSupportedForSlide = "This function is not supported for Within Slide Setting.";
+            public const string ErrorFunctionNotSupportedForOverlapRefShapeCenter = "This function is not supported for shapes that overlap the center of the reference shape.";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
         #endregion

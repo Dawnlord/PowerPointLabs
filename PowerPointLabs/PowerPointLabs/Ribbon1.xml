@@ -230,6 +230,11 @@
                     getImage="GetMagnifyImage"
                     getSupertip="GetEffectsLabMagnifyGlassSupertip"
                     onAction="MagnifyGlassEffectClick"/>
+            <button id="EffectsLabBlurSelectedButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
             <button id="blurRemainderEffect"
                     getLabel="GetEffectsLabBlurRemainderButtonLabel"
                     getImage="GetBlurRemainderImage"
@@ -663,11 +668,6 @@
 	    <menu id="menuActiveXControl" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
-    <contextMenu idMso="ContextMenuAudio">
-	    <menuSeparator id="separatorAudio" />
-	    <menu id="menuAudio" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
     <contextMenu idMso="ContextMenuChartAxis">
 	    <menuSeparator id="separatorChartAxis" />
 	    <menu id="menuChartAxis" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
@@ -833,11 +833,6 @@
 	    <menu id="menuGraphicsCompatibility" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
-    <contextMenu idMso="ContextMenuGuide">
-	    <menuSeparator id="separatorGuide" />
-	    <menu id="menuGuide" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
     <contextMenu idMso="ContextMenuLabelSection">
 	    <menuSeparator id="separatorLabelSection" />
 	    <menu id="menuLabelSection" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
@@ -871,11 +866,6 @@
     <contextMenu idMso="ContextMenuPathSegment">
 	    <menuSeparator id="separatorPathSegment" />
 	    <menu id="menuPathSegment" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuPodiumMonitorSettings">
-	    <menuSeparator id="separatorPodiumMonitorSettings" />
-	    <menu id="menuPodiumMonitorSettings" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuRevision">
@@ -971,11 +961,6 @@
     <contextMenu idMso="ContextMenuTextEditOutline">
 	    <menuSeparator id="separatorTextEditOutline" />
 	    <menu id="menuTextEditOutline" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuVideo">
-	    <menuSeparator id="separatorVideo" />
-	    <menu id="menuVideo" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
   </contextMenus>
